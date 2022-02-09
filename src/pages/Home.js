@@ -52,7 +52,7 @@ const Home = () => {
         </NavLink>
       </div>
       <div className="card-body p-4">
-        <table className="table table-striped overflow-scroll">
+        <table className="table table-striped table-responsive">
           <thead className="thead-light">
             <tr>
               <th scope="col">id</th>

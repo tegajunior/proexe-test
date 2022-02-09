@@ -46,6 +46,9 @@ const userSlice = createSlice({
       existUser.email = action.payload.user.email;
       existUser.name = action.payload.user.name;
     },
+    clearEditData(state) {
+      state.editData = null;
+    },
     setDeleteId(state, action) {
       state.deleteId = action.payload;
     },

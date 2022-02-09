@@ -15,9 +15,7 @@ const User = (props) => {
     isValid: enteredFirstNameIsValid,
     inputChangeHandler: firstNameInputChangeHandler,
     inputBlurHandler: firstNameInputBlurHandler,
-  } = useInput((value) => value.trim() !== '' && value.trim().length > 1);
-
-  // const regexEmail = /\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
+  } = useInput((value) => value.trim() !== '' && value.trim().length > 1, "name");
 
   const regexEmail = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
@@ -27,7 +25,7 @@ const User = (props) => {
     isValid: enteredEmailIsValid,
     inputChangeHandler: emailInputChangeHandler,
     inputBlurHandler: emailInputBlurHandler,
-  } = useInput((value) => value.trim() !== '' && regexEmail.test(value.trim()));
+  } = useInput((value) => value.trim() !== '' && regexEmail.test(value.trim()), "email");
 
   const sendUserData = async (data) => {
     dispatch(
@@ -44,22 +42,24 @@ const User = (props) => {
       method: `${props.id ? 'PUT' : 'POST'}`,
       body: JSON.stringify({ data }),
     });
-    if (!res.ok) {
-      throw new Error('Something went wrong');
-    }
-    dispatch(
-      uiActions.showNotification({
-        status: 'success',
-        title: 'Completed',
-        message: `${props.id ? 'User updated' : 'User added'}`,
-      })
-    );
-    if (!props.id) {
-      dispatch(userActions.addUserToItems(data));
-    } else {
+    if (props.id) {
+      dispatch(
+        uiActions.showNotification({
+          status: 'success',
+          title: 'Completed',
+          message: `${props.id ? 'User updated' : 'User added'}`,
+        })
+      );
       dispatch(userActions.editUser({ user: data, id: props.id }));
-    }
+    } else {
+      if (!res.ok) {
+        throw new Error('Something went wrong');
+      }
 
+      if (!props.id) {
+        dispatch(userActions.addUserToItems(data));
+      }
+    }
     history.replace('/');
   };
   const cancel = () => {
@@ -106,11 +106,13 @@ const User = (props) => {
   };
 
   let formIsValid = false;
-
-  if (enteredFirstNameIsValid && enteredEmailIsValid) {
+  if (props.id) {
     formIsValid = true;
+  } else {
+    if (enteredFirstNameIsValid && enteredEmailIsValid) {
+      formIsValid = true;
+    }
   }
-
   const firstNameInputClasses = `form-control ${
     enteredFirstNameHasError ? 'invalid' : ''
   }`;

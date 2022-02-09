@@ -1,7 +1,12 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { userActions } from '../store/user-store';
 
-const useInput = (validateInput) => {
-  const [value, setValue] = useState('');
+const useInput = (validateInput, inputType) => {
+  const dispatch = useDispatch();
+  let currentVal = '';
+  const [value, setValue] = useState(currentVal);
+  dispatch(userActions.clearEditData());
   const [isTouched, setIsTouched] = useState(false);
 
   const isValid = validateInput(value);
