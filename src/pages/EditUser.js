@@ -11,7 +11,7 @@ const EditUser = () => {
   const id = params.userId;
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.items);
-  const existingUser = users.find((user) => user.id == id);
+  const existingUser = users.find((user) => user.id === +id);
   if (existingUser) {
     dispatch(
       userActions.setEditData({
@@ -86,6 +86,9 @@ const EditUser = () => {
       method: 'PUT',
       body: JSON.stringify({ newUserData }),
     });
+    if (res.ok) {
+      // 
+    }
     dispatch(userActions.editUser({ user: newUserData, id }));
     history.push('/');
   };
