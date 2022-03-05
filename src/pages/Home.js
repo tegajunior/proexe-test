@@ -48,7 +48,7 @@ const Home = () => {
       <div className="card-header d-flex justify-content-between align-items-center py-3">
         <h5 className="card-title">User list</h5>
         <NavLink to="/user">
-          <button className="btn btn-primary">Add new</button>
+          <button className="btn btn-success btn-sm">Add new</button>
         </NavLink>
       </div>
       <div className="card-body p-4">
@@ -74,12 +74,12 @@ const Home = () => {
                 <td>{user.address.city}</td>
                 <td className="">
                   <NavLink to={`/user/${user.id}`}>
-                    <button className="btn btn-warning">edit</button>
+                    <button className="btn btn-warning btn-sm">edit</button>
                   </NavLink>
                 </td>
                 <td>
                   <button
-                    className="btn btn-outline-danger"
+                    className="btn btn-danger btn-sm"
                     onClick={onClickDelete.bind(null, user.id)}
                   >
                     delete

@@ -2,7 +2,6 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { userActions } from '../../store/user-store';
-import { uiActions } from '../../store/ui-store';
 import useInput from '../../hooks/use-input';
 
 const User = (props) => {
@@ -15,7 +14,7 @@ const User = (props) => {
     isValid: enteredFirstNameIsValid,
     inputChangeHandler: firstNameInputChangeHandler,
     inputBlurHandler: firstNameInputBlurHandler,
-  } = useInput((value) => value.trim() !== '' && value.trim().length > 1, "name");
+  } = useInput((value) => value.trim() !== '' && value.trim().length > 4, "name");
 
   const regexEmail = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 
@@ -28,13 +27,7 @@ const User = (props) => {
   } = useInput((value) => value.trim() !== '' && regexEmail.test(value.trim()), "email");
 
   const sendUserData = async (data) => {
-    dispatch(
-      uiActions.showNotification({
-        status: '',
-        title: 'Pending',
-        message: `${props.id ? 'Updating user...' : 'Adding new user...'}`,
-      })
-    );
+    
     const url = `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/${
       props.id ? props.id : ''
     }`;
@@ -43,13 +36,7 @@ const User = (props) => {
       body: JSON.stringify({ data }),
     });
     if (props.id) {
-      dispatch(
-        uiActions.showNotification({
-          status: 'success',
-          title: 'Completed',
-          message: `${props.id ? 'User updated' : 'User added'}`,
-        })
-      );
+      
       dispatch(userActions.editUser({ user: data, id: props.id }));
     } else {
       if (!res.ok) {
@@ -95,13 +82,7 @@ const User = (props) => {
     try {
       sendUserData(newUserData);
     } catch (error) {
-      dispatch(
-        uiActions.showNotification({
-          status: 'error',
-          title: 'Completed',
-          message: error.message,
-        })
-      );
+
     }
   };
 
@@ -138,7 +119,7 @@ const User = (props) => {
                 value={enteredFirstName}
               />
               {enteredFirstNameHasError && (
-                <p className="error-text">Name must be at least 2 chars long</p>
+                <p className="error-text">Name must be at least 5 chars long</p>
               )}
             </div>
           </div>
@@ -156,12 +137,12 @@ const User = (props) => {
             )}
           </div>
           <div className="form-actions">
-            <button className="btn btn-outline-danger" onClick={cancel}>
+            <button className="btn btn-outline-danger btn-sm" onClick={cancel}>
               Cancel
             </button>
             <button
               type="submit"
-              className="btn btn-success"
+              className="btn btn-success btn-sm"
               disabled={!formIsValid}
             >
               Submit

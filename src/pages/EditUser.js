@@ -3,7 +3,6 @@ import { useParams, useHistory } from 'react-router-dom';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { userActions } from '../store/user-store';
-import { uiActions } from '../store/ui-store';
 
 const EditUser = () => {
   const params = useParams();
@@ -39,7 +38,7 @@ const EditUser = () => {
   };
 
   const validateName = (value) => {
-    return value.trim() !== '' && value.trim().length > 1;
+    return value.trim() !== '' && value.trim().length > 4;
   };
   const nameIsValid = validateName(name);
   const nameHasError = nameIsTouched && !nameIsValid;
@@ -73,14 +72,6 @@ const EditUser = () => {
       address: existingUser.address,
       company: existingUser.company
     };
-
-    dispatch(
-      uiActions.showNotification({
-        status: '',
-        title: 'Pending',
-        message: 'Updating user...',
-      })
-    );
     const url = `https://my-json-server.typicode.com/karolkproexe/jsonplaceholderdb/data/${id}`;
     const res = await fetch(url, {
       method: 'PUT',
@@ -120,7 +111,7 @@ const EditUser = () => {
                 value={name}
               />
               {nameHasError && (
-                <p className="error-text">Name must be at least 2 chars long</p>
+                <p className="error-text">Name must be at least 5 chars long</p>
               )}
             </div>
           </div>
@@ -136,12 +127,12 @@ const EditUser = () => {
             {emailHasError && <p className="error-text">Invalid Email</p>}
           </div>
           <div className="form-actions">
-            <button className="btn btn-outline-danger" onClick={cancel}>
+            <button className="btn btn-outline-danger btn-sm" onClick={cancel}>
               Cancel
             </button>
             <button
               type="submit"
-              className="btn btn-success"
+              className="btn btn-success btn-sm"
               disabled={!formIsValid}
             >
               Submit
