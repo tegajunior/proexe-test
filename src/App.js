@@ -1,7 +1,6 @@
 import { Fragment } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import { useSelector } from 'react-redux';
 
 import MainHeader from './components/Layout/MainHeader';
 import Home from './pages/Home';
