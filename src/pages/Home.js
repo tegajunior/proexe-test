@@ -1,4 +1,4 @@
-import React, { useEffect, useState, } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { userActions } from '../store/user-store';
 import { fetchUserData } from '../store/user-actions';
@@ -13,23 +13,23 @@ const Home = () => {
   const dispatch = useDispatch();
 
   const onClickDelete = (id) => {
-    dispatch(userActions.setDeleteId(id))
+    dispatch(userActions.setDeleteId(id));
     toggleShowDeleteModal((prevState) => !prevState);
   };
 
   const onDeleteCancelled = () => {
     toggleShowDeleteModal((prevState) => !prevState);
-  }
+  };
 
   const sortAsc = () => {
-    dispatch(userActions.sortItems("ASC"));
-  }
+    dispatch(userActions.sortItems('ASC'));
+  };
   const sortDesc = () => {
-    dispatch(userActions.sortItems("DESC"));
-  }
+    dispatch(userActions.sortItems('DESC'));
+  };
   const sortId = () => {
-    dispatch(userActions.sortItems("Id"))
-  }
+    dispatch(userActions.sortItems('Id'));
+  };
   useEffect(() => {
     if (firstTime) {
       firstTime = false;
@@ -52,43 +52,46 @@ const Home = () => {
         </NavLink>
       </div>
       <div className="card-body p-4">
-        <table className="table table-striped table-responsive">
-          <thead className="thead-light">
-            <tr>
-              <th scope="col">id</th>
-              <th scope="col">Name</th>
-              <th scope="col">Username</th>
-              <th scope="col">Email</th>
-              <th scope="col">City</th>
-              <th scope="col">Edit</th>
-              <th scope="col">Delete</th>
-            </tr>
-          </thead>
-          <tbody>
-            {usersList.map((user) => (
-              <tr key={user.id}>
-                <td>{user.id}</td>
-                <td>{user.name}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-                <td>{user.address.city}</td>
-                <td className="">
-                  <NavLink to={`/user/${user.id}`}>
-                    <button className="btn btn-warning btn-sm">edit</button>
-                  </NavLink>
-                </td>
-                <td>
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={onClickDelete.bind(null, user.id)}
-                  >
-                    delete
-                  </button>
-                </td>
+        <div className="table-responsive">
+          <table className="table table-striped">
+            <thead className="thead-light">
+              <tr>
+                <th scope="col">id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Username</th>
+                <th scope="col">Email</th>
+                <th scope="col">City</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {usersList.map((user) => (
+                <tr key={user.id}>
+                  <td>{user.id}</td>
+                  <td>{user.name}</td>
+                  <td>{user.username}</td>
+                  <td>{user.email}</td>
+                  <td>{user.address.city}</td>
+                  <td className="">
+                    <NavLink to={`/user/${user.id}`}>
+                      <button className="btn btn-warning btn-sm">edit</button>
+                    </NavLink>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={onClickDelete.bind(null, user.id)}
+                    >
+                      delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
         <div className="d-flex align-items-center justify-content-center gap-3">
           <button className="btn btn-outline-warning" onClick={sortAsc}>
             Sort &gt;&gt;
